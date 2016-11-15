@@ -1,0 +1,111 @@
+<phyphox version="1.2" locale="de">
+    <title>Beschleunigung+Druck</title>
+    <category>Sensoren</category>
+    <description>Daten des Beschleunigungsensors und des Barometers in der selben Zeitdomain</description>
+    <icon format="string">B+D</icon>
+    <data-containers>
+        <container size="10000" static="false">t</container>
+        <container size="1000" static="false">sum</container>
+        <container size="10000" static="false">c2</container>
+        <container size="10000" static="false">c1</container>
+        <container size="10000" static="false">acc_x</container>
+        <container size="10000" static="false">pressure</container>
+        <container size="10000" static="false">product</container>
+        <container size="10000" static="false">sum (1)</container>
+        <container size="10000" static="false">acc_y</container>
+        <container size="10000" static="false">acc_z</container>
+        <container size="10000" static="false">acc_x^2</container>
+        <container size="10000" static="false">acc_y^2</container>
+        <container size="10000" static="false">acc_z^2</container>
+        <container size="10000" static="false">acc_sum^2</container>
+        <container size="10000" static="false">acc_abs</container>
+        <container size="10000" static="false">gy_x^2</container>
+        <container size="10000" static="false">gy_y^2</container>
+        <container size="10000" static="false">gy_z^2</container>
+        <container size="10000" static="false">gy_sum^2</container>
+        <container size="10000" static="false">acc_abs (1)</container>
+    </data-containers>
+    <input>
+        <sensor rate="10" average="true" type="accelerometer">
+            <output component="x">acc_x</output>
+            <output component="y">acc_y</output>
+            <output component="z">acc_z</output>
+            <output component="t">t</output>
+        </sensor>
+        <sensor rate="10" average="true" type="pressure">
+            <output component="x">pressure</output>
+        </sensor>
+    </input>
+    <output>
+    </output>
+    <analysis sleep="0" onUserInput="false">
+        <multiply>
+            <input as="factor" clear="false">acc_x</input>
+            <input as="factor" clear="false">acc_x</input>
+            <output as="product">acc_x^2</output>
+        </multiply>
+        <multiply>
+            <input as="factor" clear="false">acc_y</input>
+            <input as="factor" clear="false">acc_y</input>
+            <output as="product">acc_y^2</output>
+        </multiply>
+        <multiply>
+            <input as="factor" clear="false">acc_z</input>
+            <input as="factor" clear="false">acc_z</input>
+            <output as="product">acc_z^2</output>
+        </multiply>
+        <add>
+            <input as="summand" clear="false">acc_x^2</input>
+            <input as="summand" clear="false">acc_y^2</input>
+            <input as="summand" clear="false">acc_z^2</input>
+            <output as="sum">acc_sum^2</output>
+        </add>
+        <power>
+            <input as="base" clear="false">acc_sum^2</input>
+            <input as="exponent" type="value">0.5</input>
+            <output as="power">acc_abs (1)</output>
+        </power>
+    </analysis>
+    <views>
+        <view label="Absolute">
+            <graph label="Abs(Beschleunigung)" aspectRatio="2" style="lines" lineWidth="1" color="ff7e22" partialUpdate="true" history="1" labelX=" t (s)" labelY="a (m/s²)" logX="false" logY="false" xPrecision="3" yPrecision="3" scaleMinX="auto" scaleMaxX="auto" scaleMinY="auto" scaleMaxY="auto" minX="0" maxX="10" minY="0" maxY="0">
+                <input axis="y">acc_abs (1)</input>
+                <input axis="x">t</input>
+            </graph>
+            <graph label="Druck" aspectRatio="2" style="lines" lineWidth="1" color="ffff00" partialUpdate="false" history="1" labelX=" t (s)" labelY="p (hPa)" logX="false" logY="false" xPrecision="3" yPrecision="3" scaleMinX="auto" scaleMaxX="auto" scaleMinY="auto" scaleMaxY="auto" minX="0" maxX="0" minY="0" maxY="0">
+                <input axis="y">pressure</input>
+                <input axis="x">t</input>
+            </graph>
+        </view>
+        <view label="Beschleunigung">
+            <graph label="a_x" aspectRatio="2.5" style="lines" lineWidth="1" color="ff7e22" partialUpdate="false" history="1" labelX=" t (s)" labelY="a (m/s²)" logX="false" logY="false" xPrecision="3" yPrecision="3" scaleMinX="auto" scaleMaxX="auto" scaleMinY="auto" scaleMaxY="auto" minX="0" maxX="10" minY="0" maxY="0">
+                <input axis="y">acc_x</input>
+                <input axis="x">t</input>
+            </graph>
+            <graph label="a_y" aspectRatio="2.5" style="lines" lineWidth="1" color="ffff00" partialUpdate="false" history="1" labelX=" t (s)" labelY="a (m/s²)" logX="false" logY="false" xPrecision="3" yPrecision="3" scaleMinX="auto" scaleMaxX="auto" scaleMinY="auto" scaleMaxY="auto" minX="0" maxX="10" minY="0" maxY="0">
+                <input axis="y">acc_y</input>
+                <input axis="x">t</input>
+            </graph>
+            <graph label="a_z" aspectRatio="2.5" style="lines" lineWidth="1" color="ff0000" partialUpdate="false" history="1" labelX=" t (s)" labelY="a (m/s²)" logX="false" logY="false" xPrecision="3" yPrecision="3" scaleMinX="auto" scaleMaxX="auto" scaleMinY="auto" scaleMaxY="auto" minX="0" maxX="10" minY="0" maxY="0">
+                <input axis="y">acc_z</input>
+                <input axis="x">t</input>
+            </graph>
+        </view>
+        <view label="Barometer">
+            <graph label="Luftdruck" aspectRatio="2" style="lines" lineWidth="1" color="00ff00" partialUpdate="false" history="1" labelX=" t (s)" labelY="p (hPa)" logX="false" logY="false" xPrecision="3" yPrecision="3" scaleMinX="auto" scaleMaxX="auto" scaleMinY="auto" scaleMaxY="auto" minX="0" maxX="10" minY="0" maxY="0">
+                <input axis="y">pressure</input>
+                <input axis="x">t</input>
+            </graph>
+        </view>
+    </views>
+    <export>
+        <set name="all">
+            <data name="t (s)">t</data>
+            <data name="acc_abs (m/s²)">acc_abs</data>
+            <data name="pressure (hPa)">pressure</data>
+            <data name="acc_x (m/s²)">acc_x</data>
+            <data name="acc_y (m/s²)">acc_y</data>
+            <data name="acc_z (m/s²)">acc_z</data>
+        </set>
+    </export>
+</phyphox>
